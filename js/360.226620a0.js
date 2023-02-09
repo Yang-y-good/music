@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmusic"]=self["webpackChunkmusic"]||[]).push([[360],{1360:function(e,n,t){t.r(n),t.d(n,{default:function(){return a}});var u=t(3396);const c=(0,u.createElementVNode)("h2",null,"新闻页面",-1),r=[c];var s={__name:"news",props:{},setup(e,{emit:n}){return(e,n)=>((0,u.openBlock)(),(0,u.createElementBlock)("div",null,r))}};const l=s;var a=l}}]);
+//# sourceMappingURL=360.226620a0.js.map

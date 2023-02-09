@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmusic"]=self["webpackChunkmusic"]||[]).push([[838],{6838:function(e,n,t){t.r(n),t.d(n,{default:function(){return s}});var c=t(3396),l=t(7139);const o=(0,c.createElementVNode)("h2",null,"三级路由",-1);var u={__name:"test",setup(e){const n="Hello!";function t(){console.log(n)}return(e,u)=>((0,c.openBlock)(),(0,c.createElementBlock)(c.Fragment,null,[(0,c.createElementVNode)("button",{onClick:t},(0,l.zw)(n)),o],64))}};const r=u;var s=r}}]);
+//# sourceMappingURL=838.56a6c8c3.js.map
