@@ -12,7 +12,7 @@ const path = require('path')
 module.exports = defineConfig({
   transpileDependencies: true,
   // 解决打包后路径问题
-  publicPath: '/',
+  publicPath: './',
   devServer: {
     historyApiFallback: true,
     allowedHosts: "all",
