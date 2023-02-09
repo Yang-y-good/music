@@ -2,7 +2,11 @@
   <div class="login">
     <template v-if="profile">
       <div class="avatar">
-        <img :src="profile.avatarUrl" alt=""  @click="handleClick(profile.userId)"/>
+        <img
+          :src="profile.avatarUrl"
+          alt=""
+          @click="handleClick(profile.userId)"
+        />
       </div>
       <el-dropdown class="el-dro">
         <span class="el_dropdown_link">
@@ -30,7 +34,6 @@
           <use xlink:href="#icon-youxiang"></use>
         </svg>
       </div>
-      
     </template>
 
     <template v-else>
@@ -98,16 +101,25 @@ import { UserFilled } from "@element-plus/icons-vue";
 import { useStore } from "vuex";
 import { logout } from "~/network";
 import { useRouter } from "vue-router";
+
+import { anonimous } from "~/network";
 const loginUi = defineAsyncComponent(() =>
   import("@/views/login/loginUI.vue" /* webpackChunkName: "loginUI" */)
 );
 const props = defineProps({});
 const store = useStore();
-const router = useRouter()
+const router = useRouter();
 // const loginShow = ref(false);
 const loginShow = computed(() => store.state.login.logindialog);
 // 检测登录状态
-store.dispatch("login/chechLoginStatus");
+store.dispatch("login/chechLoginStatus").then((res) => {
+  console.log(res);
+  if (!res) {
+    // 游客登录
+    console.log('游客登录');
+    anonimous()
+  }
+});
 const profile = computed(() => store.state.login.profile);
 
 // 点击用户登陆
@@ -144,27 +156,24 @@ const logoutHandle = () => {
 };
 
 const handleClick = (id) => {
-  console.log('object');
+  console.log("object");
   router.push({
-    path: '/profilePage',
+    path: "/profilePage",
     query: {
-      id
-    }
-  })
-}
-
+      id,
+    },
+  });
+};
 </script>
 <style lang="less" scoped>
 .font_icon {
   width: 200px;
   margin: 0 10px;
-  
 }
 .yifu {
   font-size: 20px;
   margin: 0 10px;
   padding: 0 5px;
-  
 }
 .yifu:hover {
   cursor: pointer;

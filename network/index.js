@@ -47,6 +47,13 @@ export function loginStatus() {
   })
 }
 
+// 游客登录
+export function anonimous() {
+  return request({
+    url: `/register/anonimous?timerstamp=${Date.now()}`
+  })
+}
+
 // 退出登录
 export function logout() {
   return request({

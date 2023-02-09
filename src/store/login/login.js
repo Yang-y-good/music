@@ -55,6 +55,8 @@ export const login = {
             } = await loginStatus()
             commit('changeAccount', account)
             commit('changeProfile', profile)
+
+            return account
         },
 
         // 获取用户详情
