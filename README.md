@@ -1,5 +1,5 @@
 # music
-
+这是一个仿网易云音乐项目， 能够实现音乐播放，视频播放等功能。
 ## Project setup
 ```
 npm install
