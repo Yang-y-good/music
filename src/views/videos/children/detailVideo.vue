@@ -21,7 +21,7 @@
     <div class="title">
       <h2>{{ videoDetail.title }}</h2>
     </div>
-    <!-- 发布事件，播放量 -->
+    <!-- 发布时间，播放量 -->
     <div class="publish_playCount">
       <span>发布时间: {{ DateTimeFormat(videoDetail.publishTime) }}</span>
       <span>播放量：{{ formatNumber(videoDetail.playTime) }}</span>
@@ -40,7 +40,7 @@
   </div>
 
   <div class="detail_item" v-if="MvDetail">
-    <!-- 视频作者 -->
+    <!-- MV作者 -->
     <div class="creator">
       <div>
         <img :src="MvDetail.cover" alt="" @click="clickName(MvDetail)" />
@@ -50,17 +50,17 @@
       </div>
     </div>
 
-    <!-- 视频标题 -->
+    <!-- MV标题 -->
     <div class="title">
       <h2>{{ MvDetail.name }}</h2>
     </div>
-    <!-- 发布事件，播放量 -->
+    <!-- 发布时间，播放量 -->
     <div class="publish_playCount">
       <span>发布时间: {{ MvDetail.publishTime }}</span>
       <span>播放量：{{ formatNumber(MvDetail.playCount) }}</span>
     </div>
 
-    <!-- 视频标签 -->
+    <!-- MV标签 -->
     <div class="videoGroup">
       <span
         v-for="item in MvDetail.videoGroup"

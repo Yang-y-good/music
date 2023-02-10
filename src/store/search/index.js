@@ -1,7 +1,8 @@
 import {
     defaultSearch,
     hotSearch,
-    keyWordsSearch
+    keyWordsSearch,
+    multimatch
 } from '~/network'
 export const search = {
     namespaced: true,
@@ -34,7 +35,7 @@ export const search = {
         async getDefaultSearch({commit}){
             const result = await defaultSearch()
             const { data } = result
-            commit('changedefaultSearch', data.styleKeyword.descWord)
+            commit('changedefaultSearch', data.realkeyword)
         },
 
     // 请求热门搜索
@@ -49,6 +50,12 @@ export const search = {
             // console.log(keywords);
             const {result : {songCount, songs}} = await keyWordsSearch(keyword,limit,offset)
             commit('songCountAndSongsList',[songCount,...songs])
+        },
+        // 搜索多重匹配
+        async getMultimatch({commit}, keywords) {
+            const result = await multimatch(keywords)
+            console.log(result);
+            return result
         }
     }
 }

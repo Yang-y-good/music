@@ -1,36 +1,18 @@
 <template>
   <div class="findmusic" @scroll="onscroll">
-    <main-nav :title="title" :isfixed="true" @tabIndex="handleTabIndex">
-      <template #0>
-        <recommend class="margin_top" />
-      </template>
-      <!-- <template #1>
-        <customization class="margin_top" />
-      </template> -->
-
-      <template #1>
+    <!-- 动态组件 -->
+    <tabs-component
+      :title="title"
+      :tabsComponent="tabs"
+      @changeTbas="watchTabs"
+    >
+      <template #comp>
         <keep-alive>
-          <suspense v-if="tbaIndex === 1">
-            <!-- 具有深层异步依赖的组件 -->
-            <song-menu class="margin_top" />
-            <!-- 在 #fallback 插槽中显示 “正在加载中” -->
-            <template #fallback>
-              <loading />
-            </template>
-          </suspense>
+          <component :is="tabs[currentIndex]" class="margin_top"></component>
         </keep-alive>
       </template>
+    </tabs-component>
 
-      <template #2>
-        <top-list class="margin_top" />
-      </template>
-      <template #3>
-        <singer class="margin_top" />
-      </template>
-      <template #4>
-        <newmusic class="margin_top" />
-      </template>
-    </main-nav>
     <el-backtop
       :right="50"
       :bottom="110"
@@ -44,35 +26,31 @@
 import { ref, onMounted, defineAsyncComponent } from "vue";
 import mainNav from "@/components/main-nav.vue";
 import recommend from "@/views/findMusic/recommend/recommend.vue";
-import customization from "@/views/findMusic/customization/customization.vue";
-import topList from "./topList/toplist.vue";
+
+import tabsComponent from "@/components/tabs-Component.vue";
+
 import singer from "./singer/singer.vue";
 import newmusic from "./newMusic/newmusic.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import loading from "@/components/loading.vue";
 const songMenu = defineAsyncComponent(() =>
-  import("./songMenu/songMenu.vue" /* webpackChunkName: "tabMenu" */)
+  import(/* webpackChunkName: "tabMenu" */ "./songMenu/songMenu.vue")
 );
 
+const topList = defineAsyncComponent(() =>
+  import(/* webpackChunkName: "topList" */ "./topList/toplist.vue")
+);
 const route = useRoute();
 const store = useStore();
+const currentTab = ref("recommend");
+const tabs = [recommend, songMenu, topList, singer, newmusic];
+const title = ref(["个人推荐", "歌单", "排行榜", "歌手", "最新音乐"]);
 
-const tbaIndex = ref(0);
-
-const handleTabIndex = (index) => {
-  // console.log(index);
-  tbaIndex.value = index;
+const currentIndex = ref(0);
+const watchTabs = (item) => {
+  currentIndex.value = item;
 };
-
-const title = ref([
-  "个人推荐",
-  // "专属定制",
-  "歌单",
-  "排行榜",
-  "歌手",
-  "最新音乐",
-]);
 </script> 
 
 <style lang="less" scoped>

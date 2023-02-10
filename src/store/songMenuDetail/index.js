@@ -56,27 +56,42 @@ export const songMenu = {
         changeTotal(state, payload) {
             state.commentTotal = payload
         },
-        changeSubscribers(state, {subscribers}){
+        changeSubscribers(state, {
+            subscribers
+        }) {
             state.subscribers = subscribers
         }
     },
     actions: {
 
         // 获取歌单所有音乐
-        async getSongMenuList({commit}, id){
+        async getSongMenuList({
+            commit
+        }, id) {
             const songlist = await songMenuList(id)
             // console.log(songlist);
-            const {songs} = songlist || {songs: []}
+            const {
+                songs
+            } = songlist || {
+                songs: []
+            }
             commit('changePrivileges', songs)
             return songs
         },
 
         // 获取歌单详情
-        async getSongMenuDetail({commit}, id) {
+        async getSongMenuDetail({
+            commit
+        }, id) {
             const result = await SongMenuDetail(id)
             // console.log(result);
-            const { playlist, playlist:{tracks}} = result
-            
+            const {
+                playlist,
+                playlist: {
+                    tracks
+                }
+            } = result
+
             commit('changePlaylist', playlist)
             commit('songListId', parseInt(id))
             return tracks
@@ -88,19 +103,37 @@ export const songMenu = {
         }, id) {
             const result = await songMenuList(id)
 
-            const {
-                songs
-            } = result
-            commit('CurrentMenuList', songs)
+            try {
+                const {
+                    songs
+                } = result
+                commit('CurrentMenuList', songs)
 
-            commit('currentMenuId', parseInt(id))
+                commit('currentMenuId', parseInt(id))
+            } catch (error) {
+                ElMessage({
+                    message: '播放失败，可能网络不给力',
+                    grouping: true,
+                    type: 'error'
+                })
+            }
         },
 
         // 获取歌单评论
-        async getComment({commit}, payload) {
-            const { id, limit, offset } = payload
+        async getComment({
+            commit
+        }, payload) {
+            const {
+                id,
+                limit,
+                offset
+            } = payload
             const result = await getMenuComment(id, limit, offset)
-            const {hotComments, comments, total} = result
+            const {
+                hotComments,
+                comments,
+                total
+            } = result
             if (hotComments) commit('changeHotComments', hotComments)
             commit('changeComments', comments)
             commit('changeTotal', total)
@@ -108,9 +141,11 @@ export const songMenu = {
         },
 
         // 获取收藏者
-        async getsubscriBers({commit}, id) {
+        async getsubscriBers({
+            commit
+        }, id) {
             const result = await subscriBers(id)
-            commit('changeSubscribers',result)
+            commit('changeSubscribers', result)
             return result
         }
     }

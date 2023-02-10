@@ -3,7 +3,7 @@
     <div class="voide_left">
       <h2 class="detail">
         <el-icon class="exit" @click="exit"><ArrowLeftBold /></el-icon>
-        视频详情
+        {{ tag }}
       </h2>
       <vue3-video-play
         v-if="videoDetail"
@@ -38,7 +38,14 @@ import detailVideo from "./detailVideo.vue";
 import comment from "../comment/comment.vue";
 
 import { reactive, ref } from "@vue/reactivity";
-import { onActivated, onDeactivated, watch } from "@vue/runtime-core";
+import {
+  computed,
+  onActivated,
+  onDeactivated,
+  onMounted,
+  onUnmounted,
+  watch,
+} from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -65,13 +72,25 @@ const onscroll = (e) => {
 };
 
 onActivated(() => {
+  store.state.playMusic.isPlay = false;
   console.log("视频界面缓存");
+  store.commit("setisPlayMusic", false);
   console.log(scrolltop.value);
   lessRef.value.scrollTop = scrolltop.value;
 });
 
+onUnmounted(() => {
+  store.state.playMusic.isPlay = false;
+  console.log("离开视频界面");
+  store.commit("setisPlayMusic", true);
+});
+
 onDeactivated(() => {
-  console.log(scrolltop.value);
+  store.commit("setisPlayMusic", true);
+});
+
+const tag = computed(() => {
+  return route.query.mvId ? "MV详情" : "视频详情";
 });
 
 // 保存视频详情
@@ -121,7 +140,7 @@ const exit = () => {
 <style lang="less" scoped>
 .lessen {
   display: flex;
-  height: calc(100vh - 155px);
+  height: calc(100vh - 55px);
   overflow-x: hidden;
   justify-content: center;
   .voide_left {

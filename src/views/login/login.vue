@@ -187,7 +187,7 @@ const handleClick = (id) => {
   justify-content: flex-end;
   align-items: center;
 }
-.avatar {
+.avatar{
   img {
     cursor: pointer;
     height: 30px;

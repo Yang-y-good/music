@@ -14,15 +14,15 @@ export default defineComponent({
   components: {
     songMenu,
   },
-  setup(props) {
+   setup (props) {
     const store = useStore();
 
     console.log("歌单组件加载");
     // 热门歌单分类
-    store.dispatch("recommend/songlist/getPlayListHot");
+     store.dispatch("recommend/songlist/getPlayListHot");
     const hotTags = computed(() => store.state.recommend.songlist.hotTags);
     // 全部歌单分类
-    store.dispatch("recommend/songlist/getPlayListCatlist");
+     store.dispatch("recommend/songlist/getPlayListCatlist");
     const Tags = computed(() => store.state.recommend.songlist.Tags);
 
     const elRef = ref();

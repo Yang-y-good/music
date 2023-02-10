@@ -24,5 +24,6 @@ const title = ref(["视频", "MV"]);
 .video {
   padding: 0 20px;
   overflow: hidden;
+
 }
 </style>

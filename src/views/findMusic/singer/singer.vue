@@ -19,7 +19,7 @@ const onscroll = useScrollPostion(elRef)
 .singer {
   height: 100vh;
   overflow-x: hidden;
-  margin-top: 40px;
+  // margin-top: 40px;
   box-sizing: border-box;
 }
 </style> 

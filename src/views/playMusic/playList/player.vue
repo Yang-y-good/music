@@ -55,8 +55,7 @@
     </div>
     <div class="slider-demo-block">
       <span class="current-time">
-       
-        <span  v-if="songlist.length != 0">
+        <span v-if="songlist.length != 0">
           {{ formatSongTime(currentTime) }}
         </span>
       </span>
@@ -71,8 +70,8 @@
           :show-tooltip="false"
         />
       </div>
-      <span class="total-time" >
-        <span v-if="songlist.length!=0" >
+      <span class="total-time">
+        <span v-if="songlist.length != 0">
           {{ formatSongTime(totalTime) }}
         </span>
       </span>
@@ -150,16 +149,27 @@ const onPause = () => {
 const changePlayimg = () => {
   if (playimg.value.src === pause) {
     // 暂停
-    store.state.playMusic.isPlay = false;
+    // store.state.playMusic.isPlay = false;
     audio.value.pause();
     playimg.value.src = play;
   } else {
     // 播放
-    store.state.playMusic.isPlay = true;
+    // store.state.playMusic.isPlay = true;
     audio.value.play();
     playimg.value.src = pause;
   }
 };
+
+// 控制音乐播放
+watch(
+  () => store.state.playMusic.isPlay,
+  (value) => {
+    if(!value) {
+      console.log('暂停播放');
+       audio.value.pause();
+    }
+  }
+);
 
 // 开始加载音频了
 const onLoadstart = () => {
@@ -198,8 +208,6 @@ const preClick = () => {
     });
     return;
   }
-  // 先减1
-  // console.log(songlist.value[--index.value]);
   // 再减1
   store.dispatch("playMusic/dispatchMusicInfo", songlist.value[--index.value]);
 };

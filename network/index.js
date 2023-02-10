@@ -136,6 +136,13 @@ export function hotSearch() {
     url: '/search/hot/detail'
   })
 }
+// 搜索多重匹配
+export function multimatch(keywords) {
+  return request({
+    url: `/search/multimatch?keywords=${keywords}`
+  })
+}
+
 
 // 推荐新音乐
 export function newSongs() {
@@ -255,6 +262,18 @@ export function singerList(area = -1, type = -1, initial = -1, offset = 0, limit
     }
   })
 }
+// 获取歌手mv
+export function artisiMv(id, limit, offset ) {
+  return request({
+    url: `/artist/mv?id=${id}`,
+    params: {
+      limit,
+      offset
+    }
+  })
+}
+
+
 // 新歌速递
 export function newSongSpeed(type) {
   return request({

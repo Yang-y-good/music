@@ -1,28 +1,28 @@
 <template>
-    <!-- 歌单详情页 -->
-    <el-scrollbar class="song_menu_detail" ref="songMenuRef" @scroll="onscroll">
-      <el-skeleton animated :loading="isSongMenuInfo">
-        <template #template>
-          <skeleton-song-menu-info />
-        </template>
-        <template #default>
-          <!-- 歌单信息 -->
-          <song-menu-detail
-            :songmenuinfo="songMenuInfo"
-            ref="songMenuDetailRef"
-          />
-        </template>
-      </el-skeleton>
-      <!-- tabs标签页 -->
-      <main-nav :title="tabs" class="tabs" @tabIndex="indexHandel">
-        <template #0>
-          <!-- 歌曲列表 -->
-          <suspense v-if="currentIndex === 0">
-            <menu-song-list :songMenuId="songMenuId" />
-            <!-- 在 #fallback 插槽中显示 “正在加载中” -->
-            <template #fallback> <loading /> </template>
-          </suspense>
-        </template>
+  <!-- 歌单详情页 -->
+  <el-scrollbar class="song_menu_detail" ref="songMenuRef" @scroll="onscroll">
+    <el-skeleton animated :loading="isSongMenuInfo">
+      <template #template>
+        <skeleton-song-menu-info />
+      </template>
+      <template #default>
+        <!-- 歌单信息 -->
+        <song-menu-detail
+          :songmenuinfo="songMenuInfo"
+          ref="songMenuDetailRef"
+        />
+      </template>
+    </el-skeleton>
+    <!-- tabs标签页 -->
+    <main-nav :title="tabs" class="tabs" @tabIndex="indexHandel">
+      <template #0>
+        <!-- 歌曲列表 -->
+        <suspense v-if="currentIndex === 0">
+          <menu-song-list :songMenuId="songMenuId" />
+          <!-- 在 #fallback 插槽中显示 “正在加载中” -->
+          <template #fallback> <loading /> </template>
+        </suspense>
+      </template>
         <!-- 评论 -->
         <template #1>
           <publish-comment />
@@ -37,14 +37,14 @@
         <template #2>
           <subscri-bers :id="songMenuId" />
         </template>
-      </main-nav>
-    </el-scrollbar>
-    <el-backtop
-      :right="50"
-      :bottom="110"
-      :visibility-height="1000"
-      target=".el-scrollbar__wrap"
-    />
+    </main-nav>
+  </el-scrollbar>
+  <el-backtop
+    :right="50"
+    :bottom="110"
+    :visibility-height="1000"
+    target=".el-scrollbar__wrap"
+  />
 </template>
 
 <script setup>
@@ -59,6 +59,7 @@ import {
   onBeforeUnmount,
   onUnmounted,
   onActivated,
+  onDeactivated,
 } from "vue";
 import menuSongList from "./songlist/menuSongList.vue";
 import songMenuDetail from "@/components/song-menu-detail.vue";
@@ -75,10 +76,6 @@ import { useScrollPostion } from "@/hook/useScrollPostion";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
-// onActivated(() => {
-//   console.log("缓存");
-// });
-
 const drawer = ref(false);
 const route = useRoute();
 const store = useStore();
@@ -87,15 +84,26 @@ const songMenuId = ref();
 // 歌单详情骨架屏
 const isSongMenuInfo = ref(true);
 // 歌单信息
-const songMenuInfo = ref();
+const songMenuInfo = ref({});
 // tabs切换
 const tabs = ref(["歌曲列表", "评论", "收藏者"]);
 
-// 拿到歌单id
-songMenuId.value = parseInt(route.query.id);
 
-// 请求歌单信息
-store.dispatch("songMenu/getSongMenuDetail", songMenuId.value);
+watch(
+  () => route.query.id,
+  (value, oldValue) => {
+    // 判断是否为当前路由
+    if (route.name == "songMenuDetailPage") {
+      // 拿到歌单id
+      songMenuId.value = parseInt(value);
+      // 请求歌单信息
+      store.dispatch("songMenu/getSongMenuDetail", value);
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 // 获取歌单信息
 watch(
@@ -108,6 +116,11 @@ watch(
     }
   }
 );
+
+onMounted(() => {
+  console.log("重新载入歌单");
+});
+
 
 // 歌单元素
 const songMenuRef = ref();
@@ -131,17 +144,8 @@ const indexHandel = (index) => {
   currentIndex.value = index;
 };
 
-
-// 记录当前页面滚动的位置
-// const onscroll = ({ scrollLeft, scrollTop }) => {
-
-//   store.commit("setkeepAliveViewsScrollPostion", {
-//     routeName: "songmenudetail",
-//     list: [{ el: songMenuRef, top: scrollTop }],
-//   });
-// };
 // 保存滚动的位置
-const onscroll = useScrollPostion(songMenuRef)
+const onscroll = useScrollPostion(songMenuRef);
 </script>
 
 <style lang="less" scoped>

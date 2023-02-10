@@ -35,8 +35,10 @@ const store = new createStore({
     keepAliveViewsScrollPostion: [],
     // 取消请求
     cancel: {},
-    // 是否打开歌词
-    islyric: false
+    // 是否打开歌词界面
+    islyric: false,
+    // 是否显示歌曲栏
+    isPlayMusic: true
   },
   getters: {},
   mutations: {
@@ -46,6 +48,10 @@ const store = new createStore({
     // 首页标签下标值
     setTabsIndex(state, index) {
       state.tabsIndex = index
+    },
+
+    setisPlayMusic(state, item) {
+      state.isPlayMusic = item
     },
 
     /*

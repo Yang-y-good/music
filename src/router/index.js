@@ -40,7 +40,7 @@ const routes = [
         },
         beforeEnter: () => {
           console.log('清除缓存');
-          clearCacheView(["songMenuDetailPage"]);
+          clearCacheView(["songMenuDetailPage", "singerDetailPage"]);
         },
       },
       {
@@ -84,7 +84,8 @@ const routes = [
         meta: {
           title: '歌单',
           scrollEls: ['recommend'],
-          keepAlive: true,
+          // keepAlive: true,
+          
         },
       },
       // 歌曲搜索页
@@ -124,7 +125,8 @@ const routes = [
         name: 'singerDetailPage',
         component: () => import('@/views/findMusic/singer/children/singerDetailPage'),
         meta: {
-          title: '歌手'
+          title: '歌手',
+          keepAlive: true
         }
       },
       // 专辑详情页
@@ -144,9 +146,8 @@ const routes = [
         meta: {
           title: '个人信息'
         },
-        beforeEnter: () => {
-          console.log('清除缓存');
-          clearCacheView(["songMenuDetailPage"]);
+        beforeEnter: (from, to) => {
+          // clearCacheView(["songMenuDetailPage"]);
         },
       },
       // 视频播放页

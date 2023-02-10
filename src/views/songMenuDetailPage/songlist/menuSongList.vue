@@ -12,13 +12,13 @@
             class="cursorHover"
             >{{ scoped.row.author[0].name }}</span
           >
-         
+
           <span
             v-if="scoped.row.author[1]"
             @click="singerClick(scoped.row.author[1].id)"
             class="cursorHover"
           >
-           <span> / </span>
+            <span> / </span>
             {{ scoped.row.author[1].name }}</span
           >
         </template>
@@ -39,13 +39,15 @@
 import songList from "@/components/song-List.vue";
 import {
   computed,
+  onActivated,
   onBeforeUnmount,
+  onDeactivated,
   onMounted,
   onUnmounted,
   ref,
   watch,
 } from "@vue/runtime-core";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 import { usePlayMusic } from "@/hook/playMusic";
@@ -57,14 +59,38 @@ const props = defineProps({
 });
 const router = useRouter();
 const store = useStore();
+const route = useRoute();
 // 请求歌单所有歌曲
 const songslist = ref(["undefined"]);
 store.dispatch("songMenu/getSongMenuList", props.songMenuId).then((res) => {
   songslist.value = res;
 });
 
+onActivated(() => {
+  // watch(
+  //   () => props.songMenuId,
+  //   (value) => {
+  //     console.log(value);
+  //     store
+  //       .dispatch("songMenu/getSongMenuList", value)
+  //       .then((res) => {
+  //         songslist.value = res;
+  //       });
+  //   },{
+  //     immediate: true
+  //   }
+  // );
+
+});
+
 // 获取歌单歌曲
 const songlist = computed(() => store.state.songMenu.songlist);
+
+onDeactivated(() => {
+  console.log("清空数据");
+
+  // store.state.songMenu.songlist = [];
+});
 
 // 歌曲点击事件
 const onhandleClick = (row) => {

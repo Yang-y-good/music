@@ -2,6 +2,9 @@
   <el-scrollbar class="search_page" ref="searchPageRef">
     <span ref="searchTitle">搜索 {{ route.query.value }}</span>
     <div class="total">共找到 {{ songCount }}单曲</div>
+
+    <multimatch-page />
+
     <song-list
       :songList="songsList"
       class="songs_list"
@@ -59,7 +62,9 @@ import {
 } from "@vue/runtime-core";
 import { formatSongTime } from "@/utils/formatSongTime";
 import songlist from "@/components/song-List.vue";
+import multimatchPage from "./multimatch-page.vue";
 import { useRoute, useRouter } from "vue-router";
+
 import { useStore } from "vuex";
 
 const route = useRoute();
@@ -77,10 +82,13 @@ const reqSearchSongs = (offset) => {
     offset: offset * pageInfo.value.limit,
   });
 };
+
 watch(
   () => route.query.value,
-  () => {
-    reqSearchSongs(0);
+  (value) => {
+    if (route.name == "search") {
+      reqSearchSongs(0);
+    }
   }
 );
 

@@ -71,7 +71,15 @@ export const playMusic = {
             const {
                 data
             } = result
-            commit('changeUrl', data[0].url)
+            try {
+                commit('changeUrl', data[0].url)
+            } catch (e) {
+                ElMessage({
+                    message: '播放失败，可能网络不给力',
+                    grouping: true,
+                    type: 'error'
+                })
+            }
             commit('changeInfo', info)
             commit('actionIndex', info.index)
         },
@@ -88,8 +96,10 @@ export const playMusic = {
 
 
         // 音乐是否可用
-        async isMusicPlay({commit}, id) { 
-        return await getRequest('/check/music', {
+        async isMusicPlay({
+            commit
+        }, id) {
+            return await getRequest('/check/music', {
                 params: {
                     id,
                     timestamp: Date.now()
@@ -108,8 +118,14 @@ export const playMusic = {
         },
 
         // 获取歌曲评论
-        async reqSongComment({ commit}, params) {
-            const {id,limit,offset} = params
+        async reqSongComment({
+            commit
+        }, params) {
+            const {
+                id,
+                limit,
+                offset
+            } = params
             const result = await getSongComment(id, limit, offset)
             const {
                 hotComments,

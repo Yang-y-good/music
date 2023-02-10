@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-scrollbar class="singer_detail_page">
+    <el-scrollbar class="singer_detail_page" ref="singerRef" @scroll="onscroll">
       <!-- 歌手信息 -->
       <singer-detail-info />
 
@@ -14,7 +14,13 @@
           </suspense>
         </template>
 
-        <template #1> </template>
+        <!-- 歌手MV -->
+        <template #1>
+          <suspense v-if="currentIndex === 1">
+            <singer-mv />
+            <template #fallback> <loading /> </template>
+          </suspense>
+        </template>
 
         <!-- 歌手详情 -->
         <template #2>
@@ -45,12 +51,19 @@ import mainNav from "@/components/main-nav.vue";
 import singerAlbum from "./singerTbas/singerAlbum.vue";
 import singerDetail from "./singerTbas/singerDetail.vue";
 import simiSinger from "./singerTbas/simiSinger.vue";
+import singerMv from "./singerTbas/singerMv.vue";
 
 import loading from "@/components/loading.vue";
 
-import { computed, ref, watch } from "@vue/runtime-core";
+import { computed, defineAsyncComponent, ref, watch } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+
+import { useScrollPostion } from "@/hook/useScrollPostion";
+// const singerMv = defineAsyncComponent(() =>
+//   import("./singerTbas/singerMv.vue")
+// );
+
 const isSongMenuInfo = ref(true);
 const title = ref(["专辑", "MV", "歌手详情", "相似歌手"]);
 const store = useStore();
@@ -84,6 +97,10 @@ const tabHandle = (index) => {
   // console.log(index);
   currentIndex.value = index;
 };
+// 拿到滚动元素
+const singerRef = ref();
+// 保存滚动的位置
+const onscroll = useScrollPostion(singerRef);
 </script>
 
 <style lang="less" scoped>

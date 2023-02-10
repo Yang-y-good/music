@@ -1,4 +1,4 @@
-import {singerList, getArtists, getAlbum, AlbumContent, albumDynamic} from '~/network'
+import {singerList, getArtists, getAlbum, AlbumContent, albumDynamic, artisiMv} from '~/network'
 export const singer = {
     namespaced: true,
     state: {
@@ -81,6 +81,12 @@ export const singer = {
         // 专辑动态信息
         async getAlbumDynamic({commit}, id) {
             const result = await albumDynamic(id)
+            return result
+        },
+        // 歌手MV
+        async getArtisiMv ({commit}, {id, limit, offset}) {
+            const result = await artisiMv(id, limit, offset)
+            console.log(result);
             return result
         }
     }

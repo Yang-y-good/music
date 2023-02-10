@@ -66,6 +66,8 @@ watch(
 
     tabsObject.id = value;
     reqMenu(tabsObject);
+  },{
+    immediate: true
   }
 );
 // 创建的歌单

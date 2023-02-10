@@ -16,8 +16,10 @@
         <span class="text">新碟上市</span>
       </div>
     </div>
+     <!-- v-if="tabsIndex === 4" -->
     <keep-alive exclude="newmusicHome">
-      <suspense v-if="tabsIndex === 4">
+     
+      <suspense >
         <!-- 具有深层异步依赖的组件 -->
         <component :is="currentIndex ? album : newmusicHome" class="lessen"/>
       </suspense>

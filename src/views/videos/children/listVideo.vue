@@ -10,7 +10,7 @@
     :infinite-scroll-disabled="disabled"
     @scroll="onscroll"
   >
-    <div class="test">
+    <div>
       <el-row :gutter="30">
         <el-col :span="6" v-for="item in voideData" :key="item" v-bind="size">
           <div class="item">
@@ -94,7 +94,7 @@
 <script setup>
 // 对播放量进行格式化
 import { formatNumber } from "@/utils/formatNumber";
-// 对歌曲事件进行转化
+// 对歌曲时间进行转化
 import { formatSongTime } from "@/utils/formatSongTime";
 import loading from "@/components/loading.vue";
 import tags from "./tags.vue";
