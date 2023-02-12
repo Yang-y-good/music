@@ -1,53 +1,53 @@
 <template>
-    <div class="tabs">
-      <category-tabs
-        :hotTags="categoryList"
-        :tags="groupList"
-        :isCategory="isCategory"
-        class="padd"
-      >
-        <template #All>
-          <el-button round @click="openAll">
-            <span ref="totalMenuRef">全部歌单</span>
-            <el-icon><ArrowRight /></el-icon
-          ></el-button>
-        </template>
+  <div class="tabs" >
+    <category-tabs
+      :hotTags="categoryList"
+      :tags="groupList"
+      :isCategory="isCategory"
+      class="padd"
+    >
+      <template #All>
+        <el-button round @click="openAll">
+          <span ref="totalMenuRef">全部歌单</span>
+          <el-icon><ArrowRight /></el-icon
+        ></el-button>
+      </template>
 
-        <template #hotTabs="{ id, name }">
-          <span :class="{ hot_tags: currentName === name }">
-            <span @click="onSwitch(name, id)" class="text">{{ name }}</span>
-          </span>
-        </template>
+      <template #hotTabs="{ id, name }">
+        <span :class="{ hot_tags: currentName === name }">
+          <span @click="onSwitch(name, id)" class="text">{{ name }}</span>
+        </span>
+      </template>
 
-        <template #tabsHeadre>
+      <template #tabsHeadre>
+        <span
+          class="tag_all"
+          :class="{ total_check: currentName === '全部视频' }"
+          @click="onTotalMenu('全部视频')"
+          >全部视频</span
+        >
+      </template>
+
+      <template #tags="{ id, name }">
+        <div class="tags_select">
           <span
-            class="tag_all"
-            :class="{ total_check: currentName === '全部视频' }"
-            @click="onTotalMenu('全部视频')"
-            >全部视频</span
+            class="icona"
+            :class="{ text_check: currentName === name }"
+            @click="onCategory(name, id)"
+            >{{ name }}</span
           >
-        </template>
-
-        <template #tags="{ id, name }">
-          <div class="tags_select">
-            <span
-              class="icona"
-              :class="{ text_check: currentName === name }"
-              @click="onCategory(name, id)"
-              >{{ name }}</span
-            >
-          </div>
-        </template>
-      </category-tabs>
+        </div>
+      </template>
+    </category-tabs>
 
       <router-view v-slot="{ Component }">
         <keep-alive :include="keepAlive" :exclude="notAliveViews">
           <component :is="Component" :key="$route.meta.title" />
         </keep-alive>
       </router-view>
-    </div>
+  </div>
 
-    <!-- <list-video :voideId="hotTagsId" class="lessen" /> -->
+  <!-- <list-video :voideId="hotTagsId" class="lessen" /> -->
 </template>
 
 <script setup>
@@ -56,7 +56,7 @@ import listVideo from "./listVideo.vue";
 import { ref } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { computed } from "@vue/runtime-core";
+import { computed, onMounted } from "@vue/runtime-core";
 
 const props = defineProps({});
 const emit = defineEmits();

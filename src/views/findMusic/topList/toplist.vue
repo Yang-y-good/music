@@ -25,7 +25,7 @@ const songlist = computed(() =>
 );
 const elRef = ref();
 // 记录当前页面滚动的位置
-const onscroll = useScrollPostion(elRef)
+const onscroll = useScrollPostion(elRef);
 // const onscroll = ({ scrollLeft, scrollTop }) => {
 //   // console.log(scrollTop);
 //   store.commit("setkeepAliveViewsScrollPostion", {
@@ -37,7 +37,7 @@ const onscroll = useScrollPostion(elRef)
 
 <style lang="less" scoped>
 .top_list {
-  height: 100vh;
+  height: calc(100vh - 200px);
   overflow-x: hidden;
 }
 </style>

@@ -1,16 +1,11 @@
 <template>
   <div id="app">
     <router-view />
-    <!-- <teleport to='#play_music' >
-      <play-music/>
-    </teleport> -->
-
-    <play-music v-show="flag" />
   </div>
 </template>
 
 <script>
-import { computed, defineComponent, ref, watch } from "vue";
+import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import playMusic from "./views/playMusic/play-music.vue";
@@ -20,27 +15,14 @@ export default defineComponent({
     playMusic,
   },
   setup() {
-    const store = useStore();
-    const flag = ref(true);
-    watch(
-      () => store.state.isPlayMusic,
-      (value) => {
-        flag.value = value;
-      },
-      {
-        immediate: true,
-      }
-    );
-
-    return {
-      flag,
-    };
+    return {};
   },
 });
 </script>
 
 <style lang="less" scoped>
 #app {
+  height: 100%;
   overflow: hidden;
 }
 </style>

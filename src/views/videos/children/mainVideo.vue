@@ -72,16 +72,17 @@ const onscroll = (e) => {
 };
 
 onActivated(() => {
+  // 关闭歌曲栏
   store.state.playMusic.isPlay = false;
-  console.log("视频界面缓存");
   store.commit("setisPlayMusic", false);
-  console.log(scrolltop.value);
+
+  // 定位到之前的滚动距离
   lessRef.value.scrollTop = scrolltop.value;
 });
 
 onUnmounted(() => {
+  // 打开歌曲栏
   store.state.playMusic.isPlay = false;
-  console.log("离开视频界面");
   store.commit("setisPlayMusic", true);
 });
 
@@ -89,6 +90,7 @@ onDeactivated(() => {
   store.commit("setisPlayMusic", true);
 });
 
+// 标题
 const tag = computed(() => {
   return route.query.mvId ? "MV详情" : "视频详情";
 });

@@ -158,8 +158,8 @@ const dislike = (id) => {
 .layout-left {
   display: flex;
   align-items: center;
-  width: 400px;
-
+  // width: 400px;
+  flex: 1;
   height: 100%;
   .image {
     position: relative;

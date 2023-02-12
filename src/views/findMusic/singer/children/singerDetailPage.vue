@@ -76,9 +76,11 @@ watch(
   () => route.query.id,
   (value) => {
     // console.log(value);
+    if (!(route.name == "singerDetailPage"))  return
     singerId.value = value;
     isSongMenuInfo.value = true;
     store.state.recommend.singer.singerId = value;
+
     // 请求歌手信息
     store.dispatch("recommend/singer/getArtistsInfo", value).then((res) => {
       // 数据请求成功

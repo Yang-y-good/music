@@ -105,7 +105,7 @@ const routes = [
         component: () => import( /* webpackChunkName: "recommend" */ '@/views/podcast/podcast.vue'),
         meta: {
           title: '播客',
-          keepAlive: true
+          // keepAlive: true
         },
         children: [{
             path: 'test',

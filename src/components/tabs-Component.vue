@@ -35,4 +35,5 @@ const handleClick = (name) => {
   .demo_tabs {
     padding:  0 20px;
   }
+
 </style>

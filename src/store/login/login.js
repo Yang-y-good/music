@@ -12,7 +12,7 @@ export const login = {
         // 登陆账户信息
         account: {},
         // 登陆账户信息
-        profile: {},
+        profile: null,
         // 用户信息
         userInfo: {},
         // 用户创建的歌单
@@ -47,16 +47,13 @@ export const login = {
         async chechLoginStatus({
             commit
         }) {
-            const {
-                data: {
-                    account,
-                    profile
-                }
-            } = await loginStatus()
+                const result = await loginStatus() 
+                // data: {account,profile }} = await loginStatus()
+
+            const { data: {account,profile }} = result
             commit('changeAccount', account)
             commit('changeProfile', profile)
-
-            return account
+            return result
         },
 
         // 获取用户详情

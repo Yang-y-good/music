@@ -113,15 +113,16 @@ const router = useRouter();
 const loginShow = computed(() => store.state.login.logindialog);
 // 检测登录状态
 store.dispatch("login/chechLoginStatus").then((res) => {
-  console.log(res);
-  if (!res) {
+  if (res.data.account == null) {
     // 游客登录
     console.log('游客登录');
     anonimous()
   }
 });
-const profile = computed(() => store.state.login.profile);
 
+
+const profile = computed(() => store.state.login.profile);
+console.log(profile.value);
 // 点击用户登陆
 const loginClick = () => {
   console.log(profile.value);

@@ -208,7 +208,7 @@ export function songMenuList(id) {
   return request({
     url: `/playlist/track/all?id=${id}`,
     params: {
-      timestamp: Date.now()
+      // timestamp: Date.now()
     },
     // 取消请求
     cancelToken: new CancelToken(function executor(c) {

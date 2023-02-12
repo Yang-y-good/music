@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="songmenlist" ref="list">
     <template v-if="!songslist.length">
       <el-empty description="暂无音乐" />
     </template>
@@ -10,6 +10,7 @@
           <span
             @click="singerClick(scoped.row.author[0].id)"
             class="cursorHover"
+            ref="singer"
             >{{ scoped.row.author[0].name }}</span
           >
 
@@ -32,6 +33,8 @@
         </template>
       </song-list>
     </template>
+
+
   </div>
 </template>
 
@@ -39,6 +42,7 @@
 import songList from "@/components/song-List.vue";
 import {
   computed,
+  nextTick,
   onActivated,
   onBeforeUnmount,
   onDeactivated,
@@ -60,6 +64,10 @@ const props = defineProps({
 const router = useRouter();
 const store = useStore();
 const route = useRoute();
+const singer = ref();
+
+const list = ref();
+
 // 请求歌单所有歌曲
 const songslist = ref(["undefined"]);
 store.dispatch("songMenu/getSongMenuList", props.songMenuId).then((res) => {
@@ -80,7 +88,9 @@ onActivated(() => {
   //     immediate: true
   //   }
   // );
-
+});
+onMounted(() => {
+  console.log("重新载入歌单");
 });
 
 // 获取歌单歌曲
@@ -138,7 +148,8 @@ onUnmounted(() => {
   font-weight: 400;
 }
 .cursorHover:hover {
-  cursor: pointer;
+  cursor: pointer; 
   font-weight: 550;
 }
+
 </style>

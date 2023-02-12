@@ -18,25 +18,25 @@
       <template #0>
         <!-- 歌曲列表 -->
         <suspense v-if="currentIndex === 0">
-          <menu-song-list :songMenuId="songMenuId" />
+          <menu-song-list :songMenuId="songMenuId"/>
           <!-- 在 #fallback 插槽中显示 “正在加载中” -->
           <template #fallback> <loading /> </template>
         </suspense>
       </template>
-        <!-- 评论 -->
-        <template #1>
-          <publish-comment />
-          <suspense v-if="currentIndex === 1">
-            <!-- 具有深层异步依赖的组件 -->
-            <comment :id="songMenuId" @onClickPlgination="onclick" />
-            <!-- 在 #fallback 插槽中显示 “正在加载中” -->
-            <template #fallback> <loading /> </template>
-          </suspense>
-        </template>
-        <!-- 收藏者 -->
-        <template #2>
-          <subscri-bers :id="songMenuId" />
-        </template>
+      <!-- 评论 -->
+      <template #1>
+        <publish-comment />
+        <suspense v-if="currentIndex === 1">
+          <!-- 具有深层异步依赖的组件 -->
+          <comment :id="songMenuId" @onClickPlgination="onclick" />
+          <!-- 在 #fallback 插槽中显示 “正在加载中” -->
+          <template #fallback> <loading /> </template>
+        </suspense>
+      </template>
+      <!-- 收藏者 -->
+      <template #2>
+        <subscri-bers :id="songMenuId" />
+      </template>
     </main-nav>
   </el-scrollbar>
   <el-backtop
@@ -60,6 +60,7 @@ import {
   onUnmounted,
   onActivated,
   onDeactivated,
+  nextTick,
 } from "vue";
 import menuSongList from "./songlist/menuSongList.vue";
 import songMenuDetail from "@/components/song-menu-detail.vue";
@@ -87,7 +88,6 @@ const isSongMenuInfo = ref(true);
 const songMenuInfo = ref({});
 // tabs切换
 const tabs = ref(["歌曲列表", "评论", "收藏者"]);
-
 
 watch(
   () => route.query.id,
@@ -117,11 +117,6 @@ watch(
   }
 );
 
-onMounted(() => {
-  console.log("重新载入歌单");
-});
-
-
 // 歌单元素
 const songMenuRef = ref();
 // 歌单信息元素
@@ -146,6 +141,14 @@ const indexHandel = (index) => {
 
 // 保存滚动的位置
 const onscroll = useScrollPostion(songMenuRef);
+
+onMounted(() => {
+  nextTick(() => {
+    songMenuRef.value.setScrollTop(500)
+  });
+})
+
+
 </script>
 
 <style lang="less" scoped>

@@ -16,7 +16,7 @@
     <el-backtop
       :right="50"
       :bottom="110"
-      :visibility-height="500"
+      :visibility-height="1000"
       target=".el-scrollbar__wrap"
     />
   </div>
@@ -26,14 +26,16 @@
 import { ref, onMounted, defineAsyncComponent } from "vue";
 import mainNav from "@/components/main-nav.vue";
 import recommend from "@/views/findMusic/recommend/recommend.vue";
-
 import tabsComponent from "@/components/tabs-Component.vue";
-
-import singer from "./singer/singer.vue";
 import newmusic from "./newMusic/newmusic.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import loading from "@/components/loading.vue";
+
+const singer = defineAsyncComponent(() =>
+  import(/* webpackChunkName: "singer" */ "./singer/singer.vue")
+);
+
 const songMenu = defineAsyncComponent(() =>
   import(/* webpackChunkName: "tabMenu" */ "./songMenu/songMenu.vue")
 );
@@ -55,15 +57,13 @@ const watchTabs = (item) => {
 
 <style lang="less" scoped>
 .findmusic {
-  height: 100vh;
+  // height: 100vh;
+
   overflow: hidden;
-  .margin_top {
-    height: calc(100vh - 190px);
-    overflow: hidden;
-    padding: 0 20px;
-    // @bottom: 1.4815rem;
-    // @bottom: 100px;
-    // height: calc(~"100vh - @{bottom}");
-  }
+  // .margin_top {
+  //   // height: calc(100vh - 190px);
+  //   height: 100%;
+  //   padding: 0 20px;
+  // }
 }
 </style>

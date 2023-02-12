@@ -6,7 +6,6 @@
     v-infinite-scroll="load"
     :infinite-scroll-distance="500"
     :infinite-scroll-delay="500"
-     infinite-scroll-immediate
     :infinite-scroll-disabled="disabled"
     @scroll="onscroll"
   >
@@ -83,6 +82,12 @@
     </div>
     <loading v-if="isloading" class="loading" />
   </div>
+
+  <div v-else>
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
+  </div>
   <el-backtop
     :right="50"
     :bottom="110"
@@ -99,7 +104,14 @@ import { formatSongTime } from "@/utils/formatSongTime";
 import loading from "@/components/loading.vue";
 import tags from "./tags.vue";
 
-import { onActivated, onMounted, reactive, ref, watch } from "@vue/runtime-core";
+import {
+  nextTick,
+  onActivated,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 // 响应式
@@ -108,7 +120,7 @@ const size = {
   sm: { span: 12 },
   md: { span: 8 },
   lg: { span: 6 },
-  xl: { span: 6 },
+  xl: { span: 4 },
 };
 
 // 加载loading
@@ -131,10 +143,15 @@ const onscroll = (e) => {
   scrolltop.value = e.target.scrollTop;
 };
 
+onMounted(() => {
+  console.log(video.value);
+});
+
 onActivated(() => {
-  console.log("缓存");
   // 回到界面时再次返回原来的位置
-  video.value.scrollTop = scrolltop.value;
+  if (video.value) {
+    video.value.scrollTop = scrolltop.value;
+  }
 });
 
 // 请求参数
@@ -147,14 +164,6 @@ const tabsObject = reactive({
 const defaultRequest = (tabsObject) => {
   store.dispatch("video/getVideoGroups", tabsObject).then((res) => {
     voideData.value = res;
-    try {
-      if (voideData.value.length < 10) {
-        // / 视频数据不满10条时自动进行请求
-        load();
-      }
-    } catch (err) {
-      console.log(err);
-    }
   });
 };
 
@@ -192,7 +201,7 @@ const onmouseover = (e, item) => {
   // 关闭定时器
   clearInterval(clean);
   // 判断视频有没有预览图
-  if (item.data.previewUrl) {
+  if (item.data.previewUrl && e.path) {
     // 添加预览图
     e.path[1].firstChild.setAttribute("srcset", item.data.previewUrl);
     // 定时器结束关闭预览图
@@ -213,7 +222,9 @@ const onmouseleave = (e) => {
   // 关闭图标
   playiconvid.value = 0;
   // 关闭预览图
-  e.path[0].firstChild?.setAttribute("srcset", "");
+  if (e.path) {
+    e.path[0].firstChild.setAttribute("srcset", "");
+  }
 };
 
 const disabled = ref(false);
@@ -221,10 +232,7 @@ const disabled = ref(false);
 // 当滚动条加载到底部触发
 const load = () => {
   console.log("加载更多-------------");
-
   tabsObject.offset += 8;
-  console.log(tabsObject);
-  // if (tabsObject.offset > 50) return;
   // 500ms还没加载成功显示loading
   const showLoading = setTimeout(() => {
     isloading.value = true;
@@ -299,6 +307,31 @@ const profileClick = (item) => {
 </script>
 
 <style lang="less" scoped>
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .video_tabs_list {
   height: calc(100vh - 248px);
   overflow-x: hidden;

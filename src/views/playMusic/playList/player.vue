@@ -149,18 +149,18 @@ const onPause = () => {
 const changePlayimg = () => {
   if (playimg.value.src === pause) {
     // 暂停
-    // store.state.playMusic.isPlay = false;
+    store.state.playMusic.isPlay = false;
     audio.value.pause();
     playimg.value.src = play;
   } else {
     // 播放
-    // store.state.playMusic.isPlay = true;
+    store.state.playMusic.isPlay = true;
     audio.value.play();
     playimg.value.src = pause;
   }
 };
 
-// 控制音乐播放
+// 控制音乐暂停
 watch(
   () => store.state.playMusic.isPlay,
   (value) => {

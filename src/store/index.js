@@ -38,7 +38,9 @@ const store = new createStore({
     // 是否打开歌词界面
     islyric: false,
     // 是否显示歌曲栏
-    isPlayMusic: true
+    isPlayMusic: true,
+    // 歌单列表滚动位置
+    savePosition: 0
   },
   getters: {},
   mutations: {

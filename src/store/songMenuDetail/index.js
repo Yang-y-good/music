@@ -91,7 +91,7 @@ export const songMenu = {
                     tracks
                 }
             } = result
-
+            console.log(result);
             commit('changePlaylist', playlist)
             commit('songListId', parseInt(id))
             return tracks

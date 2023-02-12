@@ -69,7 +69,7 @@ const onscroll = useScrollPostion(elRef)
 .newmusic {
   height: calc(100vh - 190px);
   box-sizing: border-box;
-  overflow: auto;
+    overflow-x: hidden;
   .tabs {
     width: 250px;
     margin: 0 auto;

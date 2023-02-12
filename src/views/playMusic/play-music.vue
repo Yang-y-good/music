@@ -36,15 +36,6 @@ watch(
 
 // 获取歌曲信息
 const musicInfo = computed(() => store.state.playMusic.musicInfo)
-// watch(
-//   () => store.state.playMusic.musicInfo,
-//   (value) => {
-//     console.log(value);
-//     musicInfo.value = value;
-//   },{
-//     immediate: true
-//   }
-// );
 </script>
 
 <style lang="less" scoped>

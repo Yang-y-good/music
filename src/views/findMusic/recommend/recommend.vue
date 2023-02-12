@@ -39,6 +39,10 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="less">
+<style lang="less" scoped>
+.recommend {
+  height: calc(100vh - 200px);
+  overflow-x: hidden;
+}
 
 </style>

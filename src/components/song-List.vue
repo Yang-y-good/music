@@ -143,7 +143,10 @@
                   <span class="ico sq">SQ</span>
                 </span>
                 <!-- MV -->
-                <span v-show="songlist[scoped.$index].mv != 0">
+                <span
+                  v-show="songlist[scoped.$index].mv != 0"
+                  @click="pushMV(songlist[scoped.$index].mv)"
+                >
                   <span class="ico mv">MV</span>
                 </span>
                 <!-- 无音源 -->
@@ -151,7 +154,7 @@
                   <span class="ico rcmd">无音源</span>
                   <span
                     v-if="songlist[scoped.$index].noCopyrightRcmd"
-                    style="color: #898989"
+                    class="song_other"
                   >
                     {{ songlist[scoped.$index].noCopyrightRcmd.typeDesc }}
                   </span>
@@ -185,11 +188,14 @@
 
     <el-dialog
       v-model="centerDialogVisible"
-      title="该歌曲暂无音源"
+      :title="dialogTitle"
       width="30%"
       center
     >
-      <span>亲爱的,暂无版权</span>
+      <div class="dialogMeaasge">
+        <span>{{ dialogMeaasge }}</span>
+        <span class="music_vip" v-if="flag_vip_music"><vipmusic /> </span>
+      </div>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="primary" @click="centerDialogVisible = false"
@@ -202,17 +208,25 @@
   </div>
 </template>
 <script>
-import { computed, defineComponent, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
+
 import { formatSongTime } from "@/utils/formatSongTime";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { mapMusicInfo } from "@/hook/mapMusicInfo";
 
 import loading from "@/components/loading.vue";
-
+import vipmusic from "@/views/animation/vipmusic.vue";
 export default defineComponent({
   name: "",
-  components: {},
+  components: { loading, vipmusic },
   props: {
     // 是否显示操作
     isHandleShow: {
@@ -276,6 +290,7 @@ export default defineComponent({
   },
   emits: ["onhandleClick"],
   setup(props, { emit }) {
+    const router = useRouter()
     const store = useStore();
     const route = useRoute();
     // 弹窗控制
@@ -293,17 +308,61 @@ export default defineComponent({
       }
     });
 
+    // 提示框标题/信息
+    const dialogTitle = ref();
+    const dialogMeaasge = ref();
+    // 动画
+    const flag_vip_music = ref(false);
     // 监听用户点击歌曲列表
-    const changeClick = (row, column) => {
+    const changeClick = (row, column, event) => {
       // 歌曲是否可用
-      // store.dispatch("playMusic/isMusicPlay", row.id).then((res) => {
-      //   if (!res.success) {
-      //     centerDialogVisible.value = true;
-      //     return;
-      //   }
-      // });
-      // 将点击的歌曲和当前歌曲列表发送出去
-      emit("onhandleClick", row, props.songList);
+      // 获取点击音乐距离页面顶部的滚动距离
+      const position = Math.max(
+        event.target.offsetTop,
+        event.target.offsetParent.offsetTop
+      );
+      if (row.fee === 0) {
+        store
+          .dispatch("playMusic/isMusicPlay", row.id)
+          .then((res) => {
+            if (!res.success) {
+              console.log(row);
+              dialogTitle.value = "该歌曲暂无音源";
+              dialogMeaasge.value = res.message;
+              centerDialogVisible.value = true;
+              return Promise.reject(res.message);
+            }
+            return Promise.resolve();
+          })
+          .then(
+            (res) => {
+              console.log(row);
+              // 保存点击歌曲距离页面顶部的距离
+              store.state.savePosition = position;
+              // 将点击的歌曲和当前歌曲列表发送出去
+              emit("onhandleClick", row, props.songList);
+            },
+            (rea) => {
+              console.log(rea);
+            }
+          );
+      } else if (row.fee === 1) {
+        flag_vip_music.value = true;
+        dialogTitle.value = "当前为vip歌曲";
+        dialogMeaasge.value = `正在试听「${row.name}」歌曲片段`;
+        centerDialogVisible.value = true;
+        // 保存点击歌曲距离页面顶部的距离
+        store.state.savePosition = position;
+        // 将点击的歌曲和当前歌曲列表发送出去
+        emit("onhandleClick", row, props.songList);
+      } else {
+        // 保存点击歌曲距离页面顶部的距离
+        store.state.savePosition = position;
+        // 将点击的歌曲和当前歌曲列表发送出去
+        emit("onhandleClick", row, props.songList);
+      }
+
+      // console.log(event.target.getBoundingClientRect());
     };
 
     // 当前音乐列表的下标
@@ -360,6 +419,16 @@ export default defineComponent({
       uselike(id, false);
     };
 
+    const pushMV = (id) => {
+      // console.log(id, "跳转mv");
+      router.push({
+        path: "/mainVideo",
+        query: {
+          mvId: id,
+        },
+      });
+    };
+
     return {
       changeClick,
       songlist,
@@ -372,6 +441,10 @@ export default defineComponent({
       likelist,
       loveClick,
       dislike,
+      dialogTitle,
+      dialogMeaasge,
+      flag_vip_music,
+      pushMV,
     };
   },
 });
@@ -384,6 +457,14 @@ export default defineComponent({
 
 
 <style lang="less" scoped>
+.music_vip {
+  margin-left: 20px;
+  zoom: 0.5;
+}
+.dialogMeaasge {
+  display: flex;
+  align-items: flex-end;
+}
 .song_list {
   margin-bottom: 20px;
   .active_play {
@@ -421,6 +502,7 @@ export default defineComponent({
   .main_column {
     display: flex;
     align-items: center;
+
     .left_column {
       position: relative;
       margin-right: 10px;
@@ -463,7 +545,17 @@ export default defineComponent({
       display: flex;
       flex-wrap: nowrap;
       .other {
-        min-width: 80px;
+        max-width: 130px;
+        color: #898989;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .mv {
+        cursor: pointer;
+      }
+      .mv:hover {
+        zoom: 0.8;
       }
     }
   }
@@ -483,7 +575,7 @@ export default defineComponent({
     // border: 2px solid red;
     background-color: @bgcolor;
     border-radius: 4px;
-    cursor: pointer;
+
     zoom: 0.7;
   }
   .rcmd {
