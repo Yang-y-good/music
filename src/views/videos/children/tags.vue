@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs" >
+  <div class="tabs">
     <category-tabs
       :hotTags="categoryList"
       :tags="groupList"
@@ -40,11 +40,11 @@
       </template>
     </category-tabs>
 
-      <router-view v-slot="{ Component }">
-        <keep-alive :include="keepAlive" :exclude="notAliveViews">
-          <component :is="Component" :key="$route.meta.title" />
-        </keep-alive>
-      </router-view>
+    <router-view v-slot="{ Component }">
+      <keep-alive :include="keepAlive" :exclude="notAliveViews">
+        <component :is="Component" :key="$route.meta.title" />
+      </keep-alive>
+    </router-view>
   </div>
 
   <!-- <list-video :voideId="hotTagsId" class="lessen" /> -->
@@ -139,7 +139,9 @@ const onTotalMenu = (name) => {
 <style lang="less" scoped>
 .tabs {
   overflow: hidden;
-  // height: 100%;
+  height: 100vh;
+  // position: relative;
+  // width: 100%;
 }
 .hot_tags {
   color: red;

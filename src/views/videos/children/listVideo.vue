@@ -80,14 +80,22 @@
         </el-col>
       </el-row>
     </div>
-    <loading v-if="isloading" class="loading" />
+    <!-- <loading v-if="isloading" class="loading" /> -->
   </div>
 
-  <div v-else>
+  <div v-if="isloading">
     <div class="loader-container">
       <div class="loader"></div>
     </div>
   </div>
+
+  <div v-if="reqis">
+    <!-- <el-button @click="reqClick">请求失败，请重新尝试！</el-button> -->
+    <el-empty>
+      <el-button type="primary" @click="reqClick">请求失败，请重新尝试！</el-button>
+    </el-empty>
+  </div>
+
   <el-backtop
     :right="50"
     :bottom="110"
@@ -101,7 +109,7 @@
 import { formatNumber } from "@/utils/formatNumber";
 // 对歌曲时间进行转化
 import { formatSongTime } from "@/utils/formatSongTime";
-import loading from "@/components/loading.vue";
+// import loading from "@/components/loading.vue";
 import tags from "./tags.vue";
 
 import {
@@ -160,14 +168,29 @@ const tabsObject = reactive({
   id: 58100,
 });
 
+const reqis = ref(false);
+
 // 默认请求现场tag视频
 const defaultRequest = (tabsObject) => {
+  isloading.value = true;
+  reqis.value = false;
   store.dispatch("video/getVideoGroups", tabsObject).then((res) => {
-    voideData.value = res;
+    console.log(res);
+    if (!res.msg) {
+      reqis.value = true;
+      isloading.value = false;
+    } else {
+      voideData.value = res.datas;
+    }
   });
 };
 
 defaultRequest(tabsObject);
+
+// 重新发送请求
+const reqClick = () => {
+  defaultRequest(tabsObject);
+};
 
 watch(
   () => store.getters["video/getTags"],
@@ -243,7 +266,7 @@ const load = () => {
       clearTimeout(showLoading);
       isloading.value = false;
       // 请求最新数据追加到原来数据上
-      voideData.value.push(...res);
+      voideData.value.push(...res.datas);
     });
   } catch (error) {
     console.log("禁用滚动条");

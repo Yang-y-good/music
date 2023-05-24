@@ -1,6 +1,8 @@
 const axios = require('axios')
-
-
+import store from '@/store';
+// const CancelToken = axios.CancelToken;
+// const controller = new AbortController();
+// store.state.cancel = controller;
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
   timeout: 3000,
@@ -8,6 +10,7 @@ const instance = axios.create({
   //设置全局的请求次数，请求的间隙
   retry: 3,
   retryDelay: 3000,
+  
 });
 
 

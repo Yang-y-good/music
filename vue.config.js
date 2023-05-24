@@ -16,15 +16,24 @@ module.exports = defineConfig({
   devServer: {
     historyApiFallback: true,
     allowedHosts: "all",
-    host: 'localhost',
-    https:false,
-    port: 8080,
+    // proxy: {
+    //   '/api': {       //'/api'是自行设置的请求前缀
+    //     target: 'https://www.engin.top/',
+    //     pathRewrite:{'^/api':''},  //路径重写，（正则）匹配以api开头的路径为空（将请求前缀删除）
+    //     ws: true,//用于支持websocket
+    //     changeOrigin: true //用于控制请求头中的host值
+    //   },
+
+    // }
+    // host: 'localhost',
+    // https:false,
+    // port: 8080,
     client: {
       webSocketURL: 'ws://0.0.0.0:8080/ws',
     },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    }
+    // headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    // }
   },
   configureWebpack: {
     // 自动引入element-plus

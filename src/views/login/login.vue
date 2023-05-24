@@ -113,13 +113,20 @@ const router = useRouter();
 const loginShow = computed(() => store.state.login.logindialog);
 // 检测登录状态
 store.dispatch("login/chechLoginStatus").then((res) => {
+  console.log(res);
   if (res.data.account == null) {
-    // 游客登录
-    console.log('游客登录');
-    anonimous()
+    anonimous().then(
+      (res) => {
+        // 游客登录
+        console.log("游客登录成功");
+      },
+      (rea) => {
+        console.log(error, "游客登录出错");
+        return;
+      }
+    );
   }
 });
-
 
 const profile = computed(() => store.state.login.profile);
 console.log(profile.value);
@@ -188,7 +195,7 @@ const handleClick = (id) => {
   justify-content: flex-end;
   align-items: center;
 }
-.avatar{
+.avatar {
   img {
     cursor: pointer;
     height: 30px;

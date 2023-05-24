@@ -52,10 +52,10 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
-import { DateTimeFormat } from "@/utils/date-format";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { watch, ref, computed,onMounted } from "vue";
@@ -73,10 +73,12 @@ const props = defineProps({
 const emit = defineEmits(["onClickStar"]);
 const profile = computed(() => store.state.login.profile);
 const onStar = (item) => {
-  emit("onClickStar", item);
+ 
   if (!profile.value) {
     //用户未登录弹出登录框
     store.commit("login/changelogindialog", true);
+  }else {
+     emit("onClickStar", item);
   }
 };
 const imgClick = (id) => {
@@ -114,7 +116,6 @@ defineExpose({
 .comment {
   // display: flex;
   width: 100%;
-
   height: 100%;
   // flex-direction: column;
   .comment_title {
@@ -128,7 +129,7 @@ defineExpose({
   &_items {
     display: flex;
     width: 100%;
-    height: 100%;
+    // height: 100%;
     padding: 20px 10px;
     box-sizing: border-box;
     border-bottom: 1px #eee solid;
@@ -166,6 +167,7 @@ defineExpose({
       .comment_create_time {
         margin-top: 5px;
         color: rgb(179, 170, 170);
+        // color: white;
         font-size: 12px;
         display: flex;
         font-size: 12px;

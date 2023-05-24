@@ -2,7 +2,8 @@ import request from './request'
 import store from '@/store';
 const axios = require('axios')
 const CancelToken = axios.CancelToken;
-
+// const controller = new AbortController();
+// store.state.cancel = controller;
 // get请求
 export function getRequest(url, config) {
   return request.get(url, config)
@@ -201,8 +202,6 @@ export function SongMenuDetail(id) {
   })
 }
 
-
-
 // 获取歌单所有音乐
 export function songMenuList(id) {
   return request({
@@ -263,7 +262,7 @@ export function singerList(area = -1, type = -1, initial = -1, offset = 0, limit
   })
 }
 // 获取歌手mv
-export function artisiMv(id, limit, offset ) {
+export function artisiMv(id, limit, offset) {
   return request({
     url: `/artist/mv?id=${id}`,
     params: {

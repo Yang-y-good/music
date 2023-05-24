@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar ref="globalRef">
     <!-- <div class="mian" @scroll="onScroll" >  -->
-    <img :src="musicInfo.songsInfo.picUrl" alt="bg" class="bg_img" />
+    <!-- <img :src="musicInfo.songsInfo.picUrl" alt="bg" class="bg_img" /> -->
     <div class="lyric">
       <div class="cd_left">
         <img
@@ -23,6 +23,7 @@
         :musicInfo="musicInfo"
         :ric="ric"
         :currentplaytime="currentplaytime"
+        class="lyric_com"
       >
       </lyric-component>
     </div>
@@ -59,7 +60,7 @@ const globalRef = ref();
 // 点击分页将滚动条重新定位
 const resetCommentPosition = (position) => {
   console.log("分页点击", position);
-  globalRef.value.setScrollTop(position );
+  globalRef.value.setScrollTop(position);
 };
 
 // 判断当前是否处于播放状态
@@ -84,38 +85,45 @@ watch(
     immediate: true,
   }
 );
-
 </script>
 
 <style lang="less" scoped>
 .bg_img {
   min-width: 100vw;
-  height: 300px;
+  height: 100vh;
   position: absolute;
-  filter: blur(300px);
+  z-index: 0;
+  // filter: blur(300px);
   // filter: drop-shadow(10px);
+}
+.lyric_com {
+  margin-top: 50px;
+  flex: 1;
 }
 
 .lyric {
   height: 80vh;
   width: 100%;
   display: flex;
-  position: relative;
 
+  z-index: 1;
+  position: relative;
+  // background-color: rgba(173, 145, 145, 0.8);
   .cd_left {
     width: 500px;
-    height: 100%;
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
-    // justify-content: center;
-    position: relative;
-    // top: 250px;
-    top: 40%;
+    justify-content: center;
+    // margin-bottom: 100px;
+    flex: 1;
     .needle_ab {
-      top: -80px;
       right: 190px;
       width: 60px;
+      top: 50%;
+      left: 50%;
+      margin-top: -150px;
       position: absolute;
       z-index: 3;
       transform: rotate(-30deg);
@@ -123,7 +131,9 @@ watch(
       transition: all 1s;
     }
     .needle_ab_active {
-      top: -80px;
+      top: 50%;
+      left: 50%;
+      margin-top: -150px;
       right: 190px;
       width: 60px;
       position: absolute;
@@ -134,10 +144,10 @@ watch(
     }
 
     .img_cd {
-      top: -35px;
-      width: 200px;
+      // top: -35px;
+      // width: 200px;
       position: absolute;
-      z-index: 2;
+      // z-index: 2;
     }
     .pic_url {
       width: 130px;

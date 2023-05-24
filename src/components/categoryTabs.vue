@@ -15,6 +15,7 @@
 
     <div class="conent" v-show="tags">
       <div class="total_Menu" v-if="isCategory">
+        
         <div class="headre">
           <slot name="tabsHeadre"> </slot>
         </div>
@@ -83,7 +84,7 @@ const emit = defineEmits();
 .conent {
   margin-top: 10px;
   // margin-bottom: 20px;
-
+  height: 100%;
   width: 100%;
   position: relative;
   font-size: 13px;

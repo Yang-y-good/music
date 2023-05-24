@@ -168,7 +168,7 @@ const routes = [
 
 const router = createRouter({
   // hash模式
-  history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   // HTML5 模式
   // history: createWebHistory(),
   routes,

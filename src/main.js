@@ -28,23 +28,24 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-const errorHandler = (err, vm, info) => {
-  console.warn('Vue全局异常捕获开始===========')
-  console.log(`Error: ${err.toString()}\nInfo: ${info}`)
-  if (err.isAxiosError) {
-    console.log('axios请求错误!!')
-  }
-  console.warn('Vue全局异常捕获结束===========')
+// const errorHandler = (err, vm, info) => {
+//   console.warn('Vue全局异常捕获开始===========')
+//   console.log(`Error: ${err.toString()}\nInfo: ${info}`)
+//   if (err.isAxiosError) {
+//     console.log('axios请求错误!!')
+//   }
+//   console.warn('Vue全局异常捕获结束===========')
 
-}
+// }
 
-app.config.errorHandler = errorHandler;
+// app.config.errorHandler = errorHandler;
 
 app.use(router)
 app.use(store)
 app.mount('#app')
 
 console.log(process.env.VUE_APP_BASE_URL)
+console.log(process.env.VUE_APP_BASE_NAME)
 
 
 export {

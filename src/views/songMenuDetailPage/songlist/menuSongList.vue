@@ -33,8 +33,6 @@
         </template>
       </song-list>
     </template>
-
-
   </div>
 </template>
 
@@ -134,13 +132,15 @@ const albumClick = (id) => {
 };
 // 取消请求
 const cancel = computed(() => store.state.cancel);
-// 组件销毁
-onUnmounted(() => {
-  // // 取消请求
+
+onBeforeUnmount(() => {
   cancel.value();
   // // 清空歌曲列表
   store.state.songMenu.songlist = [];
 });
+
+// 组件销毁
+onUnmounted(() => {});
 </script>
 
 <style lang="less" scoped>
@@ -148,8 +148,7 @@ onUnmounted(() => {
   font-weight: 400;
 }
 .cursorHover:hover {
-  cursor: pointer; 
+  cursor: pointer;
   font-weight: 550;
 }
-
 </style>

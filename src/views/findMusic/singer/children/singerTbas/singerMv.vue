@@ -3,7 +3,6 @@
     v-infinite-scroll="load"
     :infinite-scroll-distance="500"
     :infinite-scroll-delay="500"
-    infinite-scroll-immediate
     :infinite-scroll-disabled="disabled"
   >
     <el-row :gutter="30">

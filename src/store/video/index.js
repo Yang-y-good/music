@@ -54,7 +54,7 @@ export const video = {
             offset
         }) {
             const result = await getVideo(id, offset)
-            return result.datas
+            return result
         },
         // 获取全部视频
         async getVideoAll({

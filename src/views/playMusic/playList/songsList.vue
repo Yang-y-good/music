@@ -167,6 +167,8 @@ const onInput = (value) => {
   align-items: center;
   .lyric_min {
     height: 100%;
+    width: 65%;
+    text-align: center;
   }
   .img {
     cursor: pointer;

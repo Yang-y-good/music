@@ -148,6 +148,16 @@ onMounted(() => {
   });
 })
 
+// 取消请求
+const cancel = computed(() => store.state.cancel);
+
+onBeforeUnmount(() => {
+  // // 取消请求
+  // cancel.value();
+  // console.log("取消请求，销毁组件");
+});
+
+
 
 </script>
 

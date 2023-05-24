@@ -5,8 +5,11 @@
         <div class="music_info">
           <div class="music_name">
             <span>{{ musicInfo.name }}</span>
-            <span>{{ musicInfo.author[0].name }}
-              <span v-if="musicInfo.author[1]">/ {{ musicInfo.author[1].name }}</span>- {{ musicInfo.album }}</span
+            <span
+              >{{ musicInfo.author[0].name }}
+              <span v-if="musicInfo.author[1]"
+                >/ {{ musicInfo.author[1].name }}</span
+              >- {{ musicInfo.album }}</span
             >
           </div>
         </div>
@@ -135,26 +138,29 @@ watch(
 
 <style lang="less" scoped >
 .lyric_right {
-  width: 60%;
-  display: flex;
-  align-items: flex-start;
+  // height: 80%;
+  // overflow: hidden;
+  // height: 80vh;
+  // width: 100%;
+  // display: flex;
+  // align-items: flex-start;
   .lyric {
     // margin-top: 50px;
     height: 100%;
-    width: 60%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
-    text-align: center;
+    // position: relative;
+    // text-align: center;
     .music_info {
       width: 100%;
       // height: 100px;
-      height: 50%;
+      // height: 50%;
       .music_name {
         display: flex;
-        height: 100%;
+        // height: 100%;
         justify-content: center;
         flex-direction: column;
         & span:nth-child(1) {
@@ -166,7 +172,7 @@ watch(
           margin-bottom: 5px;
           font-weight: 300;
           span {
-             font-size: 12px;
+            font-size: 12px;
           }
         }
       }
